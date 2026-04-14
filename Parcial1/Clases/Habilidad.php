@@ -1,26 +1,22 @@
 <?php
-// Clases/Habilidad.php
-class Habilidad implements AccionCombativa
-{
-    public string $nombre;
-    public int $costeMana;
-    protected int $danoBase;
+require_once "HabilidadInt.php";
 
-    public function __construct($nombre, $costeMana, $danoBase)
-    {
+abstract class Habilidad implements HabilidadInt {
+    protected string $nombre;
+    protected int $costo;
+    protected int $danioBase;
+
+    public function __construct($nombre, $costo, $danioBase) {
         $this->nombre = $nombre;
-        $this->costeMana = $costeMana;
-        $this->danoBase = $danoBase;
+        $this->costo = $costo;
+        $this->danioBase = $danioBase;
     }
 
-    public function calcularDano(): int
-    {
-        // Implementación de daño aleatorio (Crítico) o fijo [cite: 18, 19]
-        $esCritico = rand(1, 10) > 8; 
-        if ($esCritico)
-        {
-            return (int)($this->danoBase * 1.5);
-        }
-        return $this->danoBase;
+    public function getNombre(): string {
+        return $this->nombre;
+    }
+
+    public function getCosto(): int {
+        return $this->costo;
     }
 }

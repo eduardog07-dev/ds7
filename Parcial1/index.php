@@ -1,35 +1,37 @@
 <?php
-// index.php
-require_once 'Interfaces/AccionCombativa.php';
-require_once 'Excepciones/CombateExcepcion.php';
-require_once 'Clases/Habilidad.php';
-require_once 'Clases/Personaje.php';
+require_once "../Clases/Personaje.php";
+require_once "../Clases/HabilidadDannoFijo.php";
+require_once "../Clases/HabilidadDanoCritico.php";
 
-try 
-{
-    // Crear personajes [cite: 9]
-    $mago = new Personaje("Gandalf", 100, 50);
-    $enemigo = new Personaje("Orco", 120, 0);
+$gandalf = new Personaje("Gandalf", 100, 100);
+$orco = new Personaje("Orco", 120, 50);
 
-    // Definir y aprender habilidades [cite: 11]
-    $bolaFuego = new Habilidad("Bola de Fuego", 20, 50);
-    $mago->aprenderHabilidad($bolaFuego);
+$bolaFuego = new HabilidadDanoFijo("Bola de Fuego", 20, 50);
+$golpeCritico = new HabilidadDanoCritico("Golpe Crítico", 15, 40);
+?>
 
-    // Simular combate
-    echo "--- Inicio del Combate ---<br>";
-    $mago->atacar("Bola de Fuego", $enemigo);
-    
-    if ($enemigo->estaVivo())
-    {
-        $mago->atacar("Bola de Fuego", $enemigo);
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RPG</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
 
-} 
-catch (CombateExcepcion $e) 
-{
-    echo "Error de combate: " . $e->getMessage();
+<h1>Sistema de Combate RPG</h1>
+
+<?php
+try {
+    $gandalf->agregarHabilidad($bolaFuego);
+    $gandalf->agregarHabilidad($golpeCritico);
+
+    $gandalf->usarHabilidad(0, $orco);
+    $gandalf->usarHabilidad(1, $orco);
+
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
 }
-catch (Exception $e)
-{
-    echo "Error inesperado: " . $e->getMessage();
-}
+?>
+
+</body>
+</html>

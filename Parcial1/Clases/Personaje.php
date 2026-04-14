@@ -1,70 +1,50 @@
 <?php
-// Clases/Personaje.php
-class Personaje
-{
-    public string $nombre;
-    public int $vida;
-    public int $mana;
+
+class Personaje {
+    private string $nombre;
+    private int $vida;
+    private int $mana;
     private array $habilidades = [];
 
-    public function __construct($nombre, $vida, $mana)
-    {
+    public function __construct($nombre, $vida, $mana) {
         $this->nombre = $nombre;
         $this->vida = $vida;
         $this->mana = $mana;
     }
 
-    // [cite: 11] Añadir una habilidad al personaje
-    public function aprenderHabilidad(Habilidad $habilidad)
-    {
-        $this->habilidades[$habilidad->nombre] = $habilidad;
-        echo "{$this->nombre} aprendió: {$habilidad->nombre}<br>";
+    public function agregarHabilidad($habilidad) {
+        $this->habilidades[] = $habilidad;
+        echo "{$this->nombre} aprendió: " . $habilidad->getNombre() . "<br>";
     }
 
-    // [cite: 12] Ejecutar la habilidad con validaciones
-    public function atacar(string $nombreHabilidad, Personaje $objetivo)
-    {
-        // Validar si conoce la habilidad
-        if (!isset($this->habilidades[$nombreHabilidad]))
-        {
-            throw new CombateExcepcion("{$this->nombre} no conoce la habilidad: {$nombreHabilidad}.");
+    public function usarHabilidad($posicion, Personaje $objetivo) {
+        if (!isset($this->habilidades[$posicion])) {
+            throw new Exception("La habilidad no existe");
         }
 
-        $habilidad = $this->habilidades[$nombreHabilidad];
+        $habilidad = $this->habilidades[$posicion];
 
-        // Validar mana
-        if ($this->mana < $habilidad->coste)
-        {
-            throw new CombateExcepcion("{$this->nombre} no tiene suficiente mana para usar {$nombreHabilidad}.");
+        if ($this->mana < $habilidad->getCostoMana()) {
+            throw new Exception("Mana insuficiente");
         }
 
-        $this->mana -= $habilidad->coste;
-        $dano = $habilidad->calcularDano();
-        
-        echo "{$this->nombre} usa {$nombreHabilidad} contra {$objetivo->nombre}.<br>";
-        $objetivo->recibirDano($dano);
+        $this->mana -= $habilidad->getCostoMana();
+
+        $danio = $habilidad->ejecutar();
+        $objetivo->recibirDano($danio);
     }
 
-    // [cite: 13] Reducir vida y mostrar mensaje
-    public function recibirDano(int $cantidad)
-    {
-        $this->vida -= $cantidad;
-        if ($this->vida < 0)
-        {
+    public function recibirDano($danio) {
+        $this->vida -= $danio;
+
+        if ($this->vida < 0) {
             $this->vida = 0;
         }
 
-        echo "{$this->nombre} recibió {$cantidad} de daño. Vida restante: {$this->vida}<br>";
+        echo "{$this->nombre} recibió {$danio} de daño. Vida restante: {$this->vida}<br>";
 
-        if (!$this->estaVivo())
-        {
+        if ($this->vida <= 0) {
             echo "¡{$this->nombre} ha sido derrotado!<br>";
         }
-    }
-
-    //  Validar si el personaje tiene vida
-    public function estaVivo()
-    {
-        return $this->vida > 0;
     }
 }
