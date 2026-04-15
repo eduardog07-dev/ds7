@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #141e30, #243b55);
+    color: white;
+    text-align: center;
+    
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    background: #1f2a40;
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+}
+
+.barra {
+    background: #555;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.vida {
+    background: #2ecc71;
+    height: 20px;
+}
+
+button {
+    background: #e74c3c;
+    padding: 10px;
+    border: none;
+    color: white;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: gray;
+    cursor: not-allowed;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.log {
+    background: black;
+    margin: 20px auto;
+    width: 60%;
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+}
